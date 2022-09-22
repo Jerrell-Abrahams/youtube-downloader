@@ -1,33 +1,39 @@
 from pytube import YouTube
 
 class Downloader:
-    link = ""
-    resolution = ""
-
+    
     def __init__(self, link) -> None:
         self.link = link
         try:
-            yt = YouTube(self.link)
-            
+            self.yt = YouTube(self.link)
+
         except (Exception):
             print("Could not get video")
 
-    def download_video(self):
-        yt.streams.filter(res="720p").first().download()
+
+    def download_video(self, location, resolution):
+        self.yt.streams.filter(res=str(resolution)).first().download(output_path=location)
 
     def get_highest_resolution(self):
-        pass
-
+        return self.yt.streams.get_highest_resolution().resolution
+    
     def get_title(self):
-        pass
+        return str(self.yt.title)
 
     def set_resolution(self, resolution):
         self.resolution = resolution
         return str(self.resolution)
 
-    def download_audio_only(self):
-        pass
+    def download_audio_only(self, location):
+        self.yt.streams.filter(only_audio=True).first().download(output_path=location)
+        
 
-download = Downloader("https://www.youtube.com/watch?v=8ggtEzQ63oY&ab_channel=TristynLee")
 
-download.download_video()
+    
+
+    
+
+    
+
+
+
