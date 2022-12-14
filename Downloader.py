@@ -5,7 +5,6 @@ class Downloader:
 
     def __init__(self, link) -> None:
         self.link = link
-        
 
         # def progress_function(stream, chunk, bytes_remaining):
         #     size = stream.filesize
@@ -33,11 +32,3 @@ class Downloader:
 
     def download_audio_only(self, location):
         self.yt.streams.filter(only_audio=True).first().download(output_path=location)
-    
-
-    def percent(self):
-        while True:
-            time.sleep(1)
-            if self.progress == 100:
-                break
-            return self.progress
