@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import time
 
 
@@ -165,7 +166,7 @@ class Ui_MainWindow(object):
         self.label_4 = QtWidgets.QLabel(self.widget)
         self.label_4.setGeometry(QtCore.QRect(250, 0, 251, 111))
         self.label_4.setText("")
-        self.label_4.setPixmap(QtGui.QPixmap("../../../../Downloads/youtube_logo_dark-920x460.webp"))
+        self.label_4.setPixmap(QtGui.QPixmap("youtube_logo_dark.webp"))
         self.label_4.setScaledContents(True)
         self.label_4.setObjectName("label_4")
 
@@ -243,8 +244,6 @@ class Ui_MainWindow(object):
             path = QtWidgets.QFileDialog.getExistingDirectory()
             thread2.start()
             
-
-
             if path == "":
                 return
 
@@ -261,6 +260,7 @@ class Ui_MainWindow(object):
             self.youtube.download_video(location=str(path), resolution=str(res))
             self.linkText.setText("")
             self.downloadButton.setEnabled(True)
+            return 
 
             
             
@@ -269,6 +269,7 @@ class Ui_MainWindow(object):
 
             self.linkText.setText("")
             self.downloadButton.setEnabled(True)
+            return
             
    
 
@@ -279,6 +280,7 @@ class Ui_MainWindow(object):
 
             self.linkText.setText("")
             self.downloadButton.setEnabled(True)
+            return 
             
             
 
@@ -287,13 +289,13 @@ class Ui_MainWindow(object):
             self.youtube.download_video(location=str(path), resolution="360p")
             self.linkText.setText("")
             self.downloadButton.setEnabled(True)
-
-
+            return 
 
         return
 
     def close_program(self):
-        app.quit()
+        os._exit(0)
+        
 
                     
             
@@ -305,3 +307,4 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
+    

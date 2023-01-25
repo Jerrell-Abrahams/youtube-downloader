@@ -1,5 +1,5 @@
 from pytube import YouTube
-from moviepy.editor import *
+from moviepy.video.io.VideoFileClip import VideoFileClip
 import os
 import time
 
@@ -57,7 +57,7 @@ class Downloader:
         audioLocation = location + "/" + str(self.get_title()) + ".mp3"
         video = VideoFileClip(videoLocation)
         audio = video.audio
-        audio.write_audiofile(audioLocation)
+        audio.write_audiofile(audioLocation, verbose=False, logger=None)
         video.close()
         audio.close()
         os.remove(videoLocation)
