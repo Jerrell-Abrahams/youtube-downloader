@@ -11,12 +11,14 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication
 from Downloader import Downloader
-
-import os
+import threading
 
 
 
 class Ui_MainWindow(object):
+    def __init__(self):
+        self.youtube = None
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
@@ -86,7 +88,7 @@ class Ui_MainWindow(object):
         self.downloadButton.setStyleSheet("")
         self.downloadButton.setObjectName("downloadButton")
 
-        self.downloadButton.clicked.connect(self.downloadButtonPressed)
+        self.downloadButton.clicked.connect(self.download_thread)
 
         self.comboBox = QtWidgets.QComboBox(self.widget)
         self.comboBox.setGeometry(QtCore.QRect(450, 154, 101, 31))
@@ -174,7 +176,16 @@ class Ui_MainWindow(object):
         self.linkText.setPlaceholderText(_translate("MainWindow", "Video link"))
         self.radioButton.setText(_translate("MainWindow", "Highest resolution"))
 
+
+    def download_thread(self):
+        self.downloadButton.setEnabled(False)
+        thread = threading.Thread(target=self.downloadButtonPressed)
+        thread.start()
+
+
+
     def downloadButtonPressed(self):
+
         url = self.linkText.text()
         self.youtube = Downloader(url)
 
@@ -192,24 +203,31 @@ class Ui_MainWindow(object):
 
         if radioButton.isChecked():
             res = self.youtube.get_highest_resolution()
+            thread2 = threading.Thread(target=self.youtube.progress_function)
+            thread2.start()
             self.youtube.download_video(location=str(path), resolution=str(res))
+
             QApplication.processEvents()
             self.linkText.setText("")
+            self.downloadButton.setEnabled(True)
 
         elif comboBox == "Audio only":
             self.youtube.download_audio_only(location=str(path))
             QApplication.processEvents()
             self.linkText.setText("")
+            self.downloadButton.setEnabled(True)
 
         elif comboBox == "720p":
             self.youtube.download_video(location=str(path), resolution="720p")
             QApplication.processEvents()
             self.linkText.setText("")
+            self.downloadButton.setEnabled(True)
 
         elif comboBox == "360p":
             self.youtube.download_video(location=str(path), resolution="360p")
             QApplication.processEvents()
             self.linkText.setText("")
+            self.downloadButton.setEnabled(True)
 
         else:
             return
