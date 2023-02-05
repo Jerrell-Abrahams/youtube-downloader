@@ -227,11 +227,12 @@ class Ui_MainWindow(object):
     def progressRetriever(self):
         videoName = self.youtube.get_title()
     
-        while self.youtube.percentage <= 100:
+        while self.youtube.percentage <= 99:
             time.sleep(1.5)
             self.label_Percentage.setText(videoName + "... " + str(self.youtube.percentage) + "%")
             self.label_Percentage.setAlignment(QtCore.Qt.AlignCenter)
         self.label_Percentage.setText(" ")
+        print("reseted the title")
         return
  
             
@@ -242,7 +243,7 @@ class Ui_MainWindow(object):
         
         try:
             path = QtWidgets.QFileDialog.getExistingDirectory()
-            thread2.start()
+            
             
             if path == "":
                 return
@@ -253,9 +254,9 @@ class Ui_MainWindow(object):
         radioButton = self.radioButton
         comboBox = self.comboBox.currentText()
         
-
+        thread2.start()
         if radioButton.isChecked():
-            print("Inside download function")
+
             res = self.youtube.get_highest_resolution()
             self.youtube.download_video(location=str(path), resolution=str(res))
             self.linkText.setText("")
@@ -275,7 +276,7 @@ class Ui_MainWindow(object):
 
 
         elif comboBox == "720p":
-            thread2.start()
+            
             self.youtube.download_video(location=str(path), resolution="720p")
 
             self.linkText.setText("")
@@ -285,7 +286,7 @@ class Ui_MainWindow(object):
             
 
         elif comboBox == "360p":
-            thread2.start()
+
             self.youtube.download_video(location=str(path), resolution="360p")
             self.linkText.setText("")
             self.downloadButton.setEnabled(True)
